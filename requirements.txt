@@ -1,0 +1,6 @@
+numpy
+opencv-python
+scikit-image
+flask
+Werkzeug
+scikit-image

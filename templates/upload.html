@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<title>Python Flask File Upload Example</title>
+</head>
+
+<style>
+    body {
+		position:relative; 
+      margin: auto;
+      /* padding: 1%; */
+      background: black;
+      color: #fff;
+      font: 16px/1.6 menlo, monospace;
+      text-align:center;
+	  width:100%;
+	  height:100%;
+    }
+
+	.header_menu{
+		width:100%;
+		height: 100%;
+	}
+
+	.images{
+		width:75%;
+		height: 100%;
+		float:left;
+		margin: auto;
+	}
+
+	.clicks{
+		/* display: flex; */
+		/* position: relative; */
+		width:25%;
+		height: 450px;
+		text-align: center;
+		margin: auto;
+		float:right;
+	}
+
+	img{
+		max-width: 900px;
+		max-height: 900px;
+		object-fit: contain;
+	}
+	
+	.mainDiv {
+		text-align: center;
+		/* display: inline-block; */
+		height: 50%;
+		background-color: transparent;
+		margin-right: 50px;
+	}
+
+	.button {
+		
+		background: #76B3FA;
+		border-radius: 100px;
+		padding: 20px 60px;
+		color: #fff;
+		text-decoration: none;
+		font-size: 1.45em;
+		/* margin: 0 15px; */
+	}
+
+	#drop {
+		height: 50%;
+		font-weight: bold;
+		text-align: center;
+		padding: 1em 0;
+		margin: 1em 0;
+		color: #555;
+		border: 2px dashed #555;
+		border-radius: 7px;
+		cursor: default;
+  	}
+	
+
+	form{
+		padding-top: 100px;
+	}
+	
+
+</style>
+
+<body>
+	<h2>Street Light</h2>
+	<p>
+		{% with messages = get_flashed_messages() %}
+		  {% if messages %}
+			<ul>
+			{% for message in messages %}
+			  <li>{{ message }}</li>
+			{% endfor %}
+			</ul>
+		  {% endif %}
+		{% endwith %}
+	</p>
+	
+	<div class='header_menu'>
+		{% if filename %}
+			<div class="images">
+				<img id='image_update' src="{{ url_for('display_image', filename=filename) }}">
+			</div>
+		{% endif %}
+	
+		<div class='clicks'>
+			<div class="mainDiv">
+				<form method="post" action="/" enctype="multipart/form-data">
+					<div id="drop">
+						<input type="file" name="file" autocomplete="off" required>
+					</div> 
+					
+					<input type="submit" value="Load File" class="button">
+				</form>
+			</div>
+
+			<div class="mainDiv" style='padding-top: 50px;'>
+				<button type='button' id ='retrieve' class="button">Process</button>
+				<p>Luminance of street lights:</p> <p id='wordResult'></p>
+			</div>
+		</div>
+	
+	</div>
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+       $('#retrieve').click(function(){
+        //    var word = $('#word').val();
+           $.ajax({
+           url: "/get_prediction",
+           type: "get",
+           success: function(response) {
+           $("#wordResult").html(response.luminosity);
+		   $("#image_update").attr('src', response.img);
+          },
+          error: function(xhr) {
+            //Do Something to handle error
+         }
+         });
+       });
+    });
+</script>
+
+</html>
+
+
+
+
+
+
