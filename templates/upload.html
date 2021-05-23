@@ -119,7 +119,7 @@
 
 			<div class="mainDiv" style='padding-top: 50px;'>
 				<button type='button' id ='retrieve' class="button">Process</button>
-				<p>Luminance of street lights:</p> <p id='wordResult'></p>
+				<p> Calculated amount of permanent light sources: </p> <p id='wordResult'></p>
 			</div>
 		</div>
 	
@@ -135,7 +135,7 @@
            url: "/get_prediction",
            type: "get",
            success: function(response) {
-           $("#wordResult").html(response.luminosity);
+          	$("#wordResult").html(response.luminosity)
 		   $("#image_update").attr('src', response.img);
           },
           error: function(xhr) {

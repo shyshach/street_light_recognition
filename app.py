@@ -16,7 +16,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 filename= ''
 
-netMain, metaMain= load_model()
+net, output_layers, classes= load_model()
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -55,9 +55,10 @@ def display_image(filename):
 def get_prediction():
   
   imagePath= os.path.join(UPLOAD_FOLDER, filename)
-  img, lum= get_result(imagePath, netMain, metaMain)
+  img, lum = get_result(imagePath, net, output_layers, classes)
+  print(lum)
   return jsonify({'luminosity': lum, 'img': img})
 
 
 if __name__ == "__main__":
-    app.run(debug= True)   
+    app.run(host="0.0.0.0", port="5050", debug= False)   
