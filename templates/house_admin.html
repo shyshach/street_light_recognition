@@ -1,0 +1,84 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+   <div class="row">
+       <div class="col-sm-2"><input class="btn btn-primary form-control"  name="daterange" value="" style="width:210px" id="dates"  type="text" /></div>
+       <div class="col-sm-1"><button class="btn btn-primary" id ="apply_dates" type="submit">Apply</button></div>
+       <div class="col-sm-2"><button class="btn btn-outline-info" id ="refresh_dates" type="submit">Show all</button>
+   </div>
+
+    <div class="row">
+      <div class="col-sm-8">
+        <br><h5>History</h5>
+          <div class="table-responsive">
+          <table id="history_table" data-toggle="table" class="table table-striped">
+            <thead>
+                <tr>
+                    <!--<th scope="col">#</th>-->
+                    <th scope="col">House</th>
+                    <th scope="col">Street</th>
+                    <th scope="col">Original photo</th>
+                    <th scope="col">Processed photo</th>
+                    <th scope="col">Quantity</th>
+                    <th class="timestamp" scope="col">Timestamp</th>
+                </tr>
+          </thead>
+          <tbody>
+          {% for row in rows %}
+              <tr>
+                  <!--<th scope="row">{{ row.id }}</th>-->
+                  <td>{{ row.house_number }}</td>
+                  <td>{{ row.street }}</td>
+                  <td><a href="{{ row.original_photo }}">link</a></td>
+                  <td><a href="{{ row.processed_photo }}">link</a></td>
+                  <td>{{ row.quantity }}</td>
+                  <td>{{ row.timestamp }}</td>
+              </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+          </div>
+      </div>
+
+        <div style="width:300px" class="col-sm-6">
+           <p>
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <ul>
+                {% for message in messages %}
+                  <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+              {% endif %}
+            {% endwith %}
+            </p>
+            <div class="mb-3">
+              <label for="formFile" class="form-label">Upload file</label>
+
+              <div class="mainDiv">
+				<form method="post" action="/admin" enctype="multipart/form-data">
+                    <input id="house_id" type="text" value="{{ house_dict.house_id }}" hidden>
+					<div id="drop">
+						<input class="form-control" type="file" name="file" id="formFile" autocomplete="off" required>
+					</div>
+				</form>
+                  <button id="load_file_submit" class="btn btn-primary">Load file</button>
+                  <button id ='retrieve' class="btn btn-success" type="submit">Process</button>
+			   </div>
+            </div>
+
+            <br>
+            <div class="card" style="width: 18rem;">
+              <img id='image_update' class="card-img-top" src="{{ url_for('static', filename='/uploads/' + filename)}}"
+                   alt="Card image cap">
+              <div class="card-body">
+                <p class="card-text"> Calculated amount of permanent light sources: <span id='wordResult'></span></p>
+              </div>
+            </div>
+          </div>
+       </div>
+   </div>
+</div>
+
+{% endblock %}

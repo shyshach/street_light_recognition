@@ -1,0 +1,40 @@
+{% extends 'scripts.html' %}
+{% block content %}
+
+<center>
+<h3>Create an Account</h3>
+<br>
+<form action="" method="post">
+   {{ form.hidden_tag() }}
+   <div>
+      {{ form.phone(placeholder="phone", class="login_input") }}
+      {% for error in form.phone.errors %}
+      <p>{{ error }}</p>
+      {% endfor %}
+   </div>
+   <div>
+      {{ form.email(placeholder="email", class="login_input") }}
+      {% for error in form.email.errors %}
+      <p>{{ error }}</p>
+      {% endfor %}
+   </div>
+   <div>
+      {{ form.password1(placeholder="password", class="login_input") }}
+      {% for error in form.password1.errors %}
+      <p>{{ error }}</p>
+      {% endfor %}
+   </div>
+   <div>
+      {{ form.password2(placeholder="Confirm password", class="login_input") }}
+      {% for error in form.password2.errors %}
+      <p>{{ error }}</p>
+      {% endfor %}
+   </div>
+   <div>{{ form.submit(class="login_submit") }}
+   </div>
+</form>
+<p></p>
+<h6><a href="{{ url_for('login') }}">Already have an account?</a></h6>
+</center>
+
+{% endblock %}

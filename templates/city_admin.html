@@ -1,0 +1,236 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+   <div class="row">
+       <div class="col-sm-2"><input class="btn btn-primary form-control"  name="daterange" value="" style="width:210px" id="dates"  type="text" /></div>
+       <div class="col-sm-2" style="width: 161px;">
+            <select class="form-select select_house" id="filter_street" aria-label="">
+                <option value="all" selected>Select street</option>
+                {% for street in streets_of_city %}
+                <option value="{{ street.street_id }}">{{ street.street_name }}</option>
+                {% endfor %}
+            </select>
+       </div>
+       <div class="col-sm-2">
+            <select class="form-select select_house"  id="filter_house" aria-label="">
+                <option value="all" selected>Select house</option>
+
+            </select>
+       </div>
+       <div class="col-sm-1"><button class="btn btn-primary" style="margin-left: -55px;" id="apply_dates" type="submit">Apply</button></div>
+       <div class="col-sm-2"><button class="btn btn-outline-info" style="margin-left: -86px;" id ="refresh_dates" type="submit">Show all</button>
+   </div>
+
+    <div class="row">
+      <div class="col-sm-8">
+        <br><h5>History</h5>
+          <div class="table-responsive">
+          <table id="history_table" data-toggle="table" class="table table-striped">
+            <thead>
+                <tr>
+                    <!--<th scope="col">#</th>-->
+                    <th class="house_th" scope="col">House</th>
+                    <th class="street_th" scope="col">Street</th>
+                    <th scope="col">Original photo</th>
+                    <th scope="col">Processed photo</th>
+                    <th scope="col">Quantity</th>
+                    <th class="timestamp" scope="col">Timestamp</th>
+                </tr>
+          </thead>
+          <tbody>
+          {% for row in rows %}
+              <tr>
+                  <!--<th scope="row">{{ row.id }}</th>-->
+                  <td>{{ row.house_number }}</td>
+                  <td>{{ row.street }}</td>
+                  <td><a href="{{ row.original_photo }}">link</a></td>
+                  <td><a href="{{ row.processed_photo }}">link</a></td>
+                  <td>{{ row.quantity }}</td>
+                  <td>{{ row.timestamp }}</td>
+              </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+         </div>
+
+          <div class="row" style="margin-top:50px">
+
+          <h5>Users</h5>
+              <div class="col-sm-4">
+                  <label class="form-label">Street admins</label>
+                  <table  id="user_street_table" data-toggle="table" class="table table-striped">
+                      <thead>
+                        <tr>
+                            <!--<th scope="col">#</th>
+                            <th class="house_th" scope="col">House</th>-->
+                            <th class="street_th" scope="col">Street</th>
+                            <th scope="col" class="user_th">User</th>
+                            <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody >
+                      {% for row in streets_of_city %}
+                          <tr>
+                              <td>
+                                  <input type="text" value="{{ row.street_id }}" hidden>
+                                  {{ row.street_name }}
+                              </td>
+                              <td>
+                                  <select class="form-select" aria-label="">
+                                  <option value="current" selected>{{ row.street_user }}</option>
+                                      {% for user in all_users %}
+                                          {% if user['user_email']!=row.street_user %}
+                                          <option value="{{ user['user_id'] }}">{{ user['user_email'] }}</option>
+                                          {% endif %}
+                                      {% endfor %}
+
+                                </select>
+                              </td>
+                              <td><div class="save_street_user" ><i class="bi bi-save2-fill"></i></div></td>
+                          </tr>
+                      {% endfor %}
+                      </tbody>
+                  </table>
+
+              </div>
+              <div class="col-sm-5">
+                  <label class="form-label">House admins</label>
+                    <table id="user_house_table" data-toggle="table" class="table table-striped">
+                      <thead>
+                        <tr>
+                            <th class="house_th" scope="col">House</th>
+                            <th class="street_th" scope="col">Street</th>
+                            <th scope="col">User</th>
+                            <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody >
+                      {% for row in houses_of_city %}
+                          <tr>
+                              <td>
+                                  <input type="text" value="{{ row.house_id }}" hidden>
+                                  {{ row.house_number }}
+                              </td>
+                              <td>{{ row.street_name }}</td>
+                              <td class="user_select">
+                                  <select class="form-select" aria-label="">
+                                  <option value="current" selected>{{ row.owner_email }}</option>
+                                      {% for user in all_users %}
+                                          {% if user['user_email']!=row.owner_email %}
+                                         <option value="{{ user['user_id'] }}">{{ user['user_email'] }}</option>
+                                            {% endif %}
+                                      {% endfor %}
+
+                                </select>
+                              </td>
+                              <td><div class="save_house_user" ><i class="bi bi-save2-fill"></i></div></td>
+                          </tr>
+                      {% endfor %}
+                      </tbody>
+                  </table>
+
+              </div>
+
+          </div>
+
+      </div>
+
+        <div style="width:300px" class="col-sm-6">
+           <p>
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <ul>
+                {% for message in messages %}
+                  <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+              {% endif %}
+            {% endwith %}
+           </p>
+            <div class="mb-3">
+              <label for="formFile" class="form-label">Upload file for house:</label>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <select class="form-select select_house" id="add_street" aria-label="">
+                            <option value="all" selected>Select street</option>
+                            {% for street in streets_of_city %}
+                            <option value="{{ street.street_id }}">{{ street.street_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <select class="form-select select_house"  id="add_house" aria-label="">
+                            <option value="" selected>Select house</option>
+                            {% for house in houses_of_street %}
+                            <option value="{{ house.id }}">{{ house.number }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <br>
+              <div class="mainDiv">
+				<form method="post" action="/admin" enctype="multipart/form-data">
+                    <input id="house_id" type="text" value="{{ house_id }}" hidden>
+					<div id="drop">
+						<input class="form-control" type="file" name="file" id="formFile" autocomplete="off" required>
+					</div>
+				</form>
+                  <button id="load_file_submit" class="btn btn-primary">Load file</button>
+                  <button id ='retrieve' class="btn btn-success" type="submit">Process</button>
+			   </div>
+            </div>
+
+            <br>
+            <div class="card" style="width: 18rem;">
+              <img id='image_update' class="card-img-top" src="{{ url_for('static', filename='/uploads/' + filename)}}"
+                   alt="Card image cap">
+              <div class="card-body">
+                <p class="card-text"> Calculated amount of permanent light sources: <span id='wordResult'></span></p>
+              </div>
+            </div>
+            <br>
+            <label class="form-label">Add new street:</label>
+            <div class="input-group mb-3" style="width: 292px;">
+                <input type="text" id="current_user" value="{{ current_user.id }}" hidden>
+                <input type="text" id="current_city" value="{{ city_dict.id }}" hidden>
+                <input type="text"  class="form-control" id="new_street" placeholder="Street" aria-label="Add new street" aria-describedby="button-addon2">
+                <!-- <select class="form-select select_house"  id="new_street_owner" aria-label="">
+                    <option value="{{ current_user.id }}" selected>Owner(you)</option>
+                </select> -->
+                <button class="btn btn-outline-secondary" type="button" id="new_street_submit">Add</button>
+            </div>
+
+            <label class="form-label">Add new house:</label>
+            <div class="input-group mb-3" style="width: 292px;">
+                <select class="form-select select_house" id="new_house_street" aria-label="">
+                    <option value="all" selected>Street</option>
+                    {% for street in streets_of_city %}
+                    <option value="{{ street.street_id }}">{{ street.street_name }}</option>
+                    {% endfor %}
+                </select>
+                <input type="text"  class="form-control" id="new_house" placeholder="Number" aria-label="Add new house" aria-describedby="button-addon2">
+                <select class="form-select select_house"  id="add_house_owner" aria-label="">
+                    <option value="{{ current_user.id }}" selected>Owner(you)</option>
+                    {% for user in users_without_house_dict %}
+                    <option value="{{ user.id }}">{{ user.email }}</option>
+                    {% endfor %}
+                </select>
+                <button class="btn btn-outline-secondary" type="button" id="new_house_submit">Add</button>
+            </div>
+            <label class="form-label">Streets in {{ city_dict.city_name }}:</label>
+                <ul class="list-group">
+                {% for street in streets_of_city %}
+                    <li class="list-group-item">{{ street.street_name }}</li>
+                {% endfor %}
+                </ul>
+            <br>
+          </div>
+
+       </div>
+
+   </div>
+
+</div>
+
+{% endblock %}

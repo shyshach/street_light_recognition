@@ -1,0 +1,35 @@
+{% extends 'scripts.html' %}
+{% block content %}
+
+<center>
+<h3>Log in to your account</h3>
+   <br>
+<form action="" method="post">
+   {{ form.hidden_tag() }}
+   <div>
+      {{ form.email(placeholder="email", class="login_input") }}
+      {% for error in form.email.errors %}
+      <p>{{ error }}</p>
+      {% endfor %}
+   </div>
+   <div>
+      {{ form.password(placeholder="password", class="login_input") }}
+      {% for error in form.password.errors %}
+      <p>{{ error }}</p>
+      {% endfor %}
+   </div>
+   <!--<p>{{ form.remember() }} {{ form.remember.label }}</p>-->
+   {% with messages = get_flashed_messages() %}
+   {% if messages %}
+      {% for message in messages %}
+         {{ message }}
+      {% endfor %}
+      {% endif %}
+   {% endwith %}
+   <p>{{ form.submit(class="login_submit") }}
+   </p>
+</form>
+Don't have an account? <a href="{{ url_for('register') }}">Sign up</a>
+</center>
+
+{% endblock %}

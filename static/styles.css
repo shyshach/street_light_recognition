@@ -1,0 +1,63 @@
+.container .navbar{
+    color: #ffffff;
+    padding: 10px;
+    min-height: 48px;
+}
+
+.container .navbar-nav{
+    float: right;
+    right: 30px;
+    position: absolute;
+}
+
+.signup_link{
+    width: 100px;
+    font-weight: bold;
+}
+
+.login_input{
+    padding: 6px 10px ;
+    margin: 4px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box
+}
+
+.login_submit {
+    background-color: #4CAF50;
+    margin: 11px;
+    color: white;
+    padding: 10px;
+    width: 200px;
+    border: none;
+    border-radius: 4px
+}
+
+#history_table td {
+    max-width: 200px;
+    word-wrap: break-word
+}
+
+.timestamp{
+    white-space: nowrap
+}
+
+.select_house{
+    width:150px;
+}
+
+#list_of_houses{
+    width: 100px
+}
+
+.table-responsive{
+    height: 500px;
+}
+
+.save_street_user i, .save_house_user i, .save_city_user i{
+    cursor: pointer
+}
+
+#user_city_table {
+    width: 300px;
+}

@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-from cal_lum import cal_luminosity
 import os
 
 font = cv2.FONT_HERSHEY_PLAIN
@@ -12,7 +11,7 @@ def load_model():
     with open("weights/yolo.names", "r") as f:
         classes = [line.strip() for line in f.readlines()]
     layer_names = net.getLayerNames()
-    output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
+    output_layers = [layer_names[i - 1] for i in net.getUnconnectedOutLayers()]
 
     return net, output_layers, classes
 
